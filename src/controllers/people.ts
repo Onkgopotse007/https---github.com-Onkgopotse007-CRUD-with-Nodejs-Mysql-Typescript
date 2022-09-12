@@ -7,9 +7,12 @@ const NAMESPACE = 'People'
 
 const addPeople =(req:Request, res: Response, next: NextFunction)=>{
     logging.info(NAMESPACE, `Inserting people records`)
-    let {id, first_name,last_name,email}=req.body
+    let id: number=req.body.id
+    let first_name: string=req.body.first_name
+    let last_name: string = req.body.last_name
+    let email: string =req.body.email
     
-    let query = `INSERT INTO people (id, first_name, last_name, email) VALUES(${id},"${first_name}", "${last_name}", "${email}")`
+    let query:string = `INSERT INTO people (id, first_name, last_name, email) VALUES(${id},"${first_name}", "${last_name}", "${email}")`
     Connect()
     .then(connection=>{
         Query(connection, query)
@@ -40,10 +43,13 @@ const addPeople =(req:Request, res: Response, next: NextFunction)=>{
     })
 }
 const deletePeople =(req:Request, res: Response, next: NextFunction)=>{
+    //function to delete a record by taking in the record id
     logging.info(NAMESPACE, `Deleting people records`)
-    let {id}=req.body
+    let id: number=req.body.id
     
-    let query = `DELETE FROM people WHERE id = ${id}`
+    let query:string = `DELETE FROM people WHERE id = ${id}`
+    //connect to database, then pass in the query which will carry out the deletion process and return the changes made by the query
+    //in the case of an error return the error and the error code in json
     Connect()
     .then(connection=>{
         Query(connection, query)
@@ -75,9 +81,10 @@ const deletePeople =(req:Request, res: Response, next: NextFunction)=>{
 }
 const updatePeople =(req:Request, res: Response, next: NextFunction)=>{
     logging.info(NAMESPACE, `Updating people records`)
-    let {id,email}=req.body
+    let id:number=req.body.id
+    let email:string = req.body.email
     
-    let query = `UPDATE people SET email = "${email}"  WHERE id = ${id} `
+    let query:string = `UPDATE people SET email = "${email}"  WHERE id = ${id} `
     Connect()
     .then(connection=>{
         Query(connection, query)
@@ -110,7 +117,7 @@ const updatePeople =(req:Request, res: Response, next: NextFunction)=>{
 const getPeopleAll = (req:Request, res: Response, next: NextFunction)=>{
     logging.info(NAMESPACE, `getting all people`)
     
-    let query ='select * FROM people'
+    let query:string ='select * FROM people'
 
     Connect()
     .then(connection=>{
